@@ -1,18 +1,18 @@
 import { ReactNode } from 'react'
 
 export interface SecretWordContextProps {
-	startGame: boolean
-	category: string
-	word: string
-	points: number
-	tries: number
-	startNewGame(): void
-	getCategoryAndWord(): void
-	addCorrectLetterPositions(positions: number[]): void
-	renderByLetter(index: number): string
-	isGameWon(): boolean
-	handlePoints(): void
-	decreaseTries(): void
+	isGameStarted: boolean
+	selectedCategory: string
+	currentWord: string
+	score: number
+	remainingAttempts: number
+	startGame(): void
+	selectRandomCategoryAndWord(): void
+	revealLetterPositions(positions: number[]): void
+	getLetterToDisplay(index: number): string
+	hasPlayerWon(): boolean
+	incrementScore(): void
+	decrementAttempts(): void
 	resetGame(): void
 }
 

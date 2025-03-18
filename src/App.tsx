@@ -6,29 +6,29 @@ import { useEffect } from 'react'
 
 function App() {
 	const {
-		getCategoryAndWord,
-		startNewGame,
+		isGameStarted,
+		hasPlayerWon,
+		incrementScore,
 		startGame,
-		isGameWon,
-		handlePoints
+		selectRandomCategoryAndWord
 	} = useSecretWord()
 
 	function handleStartGame() {
-		startNewGame()
-		getCategoryAndWord()
+		startGame()
+		selectRandomCategoryAndWord()
 	}
 
 	useEffect(() => {
-		if (isGameWon()) {
-			handlePoints()
+		if (hasPlayerWon()) {
+			incrementScore()
 		}
-	}, [isGameWon, handlePoints])
+	}, [hasPlayerWon, incrementScore])
 
 	return (
 		<div className='min-h-screen w-full tracking-wide flex flex-col items-center justify-center bg-gray-800'>
-			{isGameWon() ? (
+			{hasPlayerWon() ? (
 				<Victory handleStartGame={handleStartGame} />
-			) : startGame ? (
+			) : isGameStarted ? (
 				<Game />
 			) : (
 				<StartGame handleStartGame={handleStartGame} />

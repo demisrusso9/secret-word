@@ -11,91 +11,90 @@ type CategoryKey = keyof WordListType
 export const SecretWordContext = createContext({} as SecretWordContextProps)
 
 export function SecretWordProvider({ children }: SecretWordProviderProps) {
-	const [startGame, setStartGame] = useState(false)
+	const [isGameStarted, setIsGameStarted] = useState(false)
 
-	const [category, setCategory] = useState('')
-	const [word, setWord] = useState('')
+	const [selectedCategory, setSelectedCategory] = useState('')
+	const [currentWord, setCurrentWord] = useState('')
 
-	const [points, setPoints] = useState(0)
-	const [tries, setTries] = useState(5)
+	const [score, setScore] = useState(0)
+	const [remainingAttempts, setRemainingAttempts] = useState(5)
 
-	const [correctLettersPositions, setCorrectLettersPositions] = useState<
+	const [revealedLetterPositions, setRevealedLetterPositions] = useState<
 		number[]
 	>([])
 
-	function startNewGame() {
-		setStartGame(true)
-		setCorrectLettersPositions([])
+	function startGame() {
+		setIsGameStarted(true)
+		setRevealedLetterPositions([])
 	}
 
-	function getCategoryAndWord() {
-		const total = Object.keys(wordList).length
-		const randomNumber = Math.floor(Math.random() * total)
+	function selectRandomCategoryAndWord() {
+		const totalCategories = Object.keys(wordList).length
+		const randomCategoryIndex = Math.floor(Math.random() * totalCategories)
 
-		const categoryKey = Object.keys(wordList)[randomNumber] as CategoryKey
-		const categoryValues = Object.values(wordList[categoryKey])
+		const categoryKey = Object.keys(wordList)[
+			randomCategoryIndex
+		] as CategoryKey
+		const wordsInCategory = Object.values(wordList[categoryKey])
 
-		const randomNumberForWord = Math.floor(
-			Math.random() * categoryValues.length
-		)
-		const wordKey = categoryValues[randomNumberForWord]
+		const randomWordIndex = Math.floor(Math.random() * wordsInCategory.length)
+		const randomWord = wordsInCategory[randomWordIndex]
 
-		setCategory(categoryKey)
-		setWord(wordKey)
+		setSelectedCategory(categoryKey)
+		setCurrentWord(randomWord)
 	}
 
-	function addCorrectLetterPositions(positions: number[]) {
-		const removeDuplicates = new Set<number>()
+	function revealLetterPositions(positions: number[]) {
+		const uniquePositions = new Set<number>([
+			...revealedLetterPositions,
+			...positions
+		])
 
-		const allNumbers = [...correctLettersPositions, ...positions]
-		allNumbers.forEach((number) => removeDuplicates.add(number))
-
-		const correctPositions = [...removeDuplicates.values()]
-		setCorrectLettersPositions([...correctPositions])
+		setRevealedLetterPositions([...uniquePositions])
 	}
 
-	function renderByLetter(index: number) {
-		return correctLettersPositions.includes(index) ? word[index] : ''
+	function getLetterToDisplay(index: number) {
+		return revealedLetterPositions.includes(index) ? currentWord[index] : ''
 	}
 
 	function resetGame() {
-		setStartGame(false)
-		setPoints(0)
-		setTries(5)
+		setIsGameStarted(false)
+		setScore(0)
+		setRemainingAttempts(5)
 	}
 
-	function decreaseTries() {
-		setTries((prev) => prev - 1)
+	function decrementAttempts() {
+		setRemainingAttempts((prev) => prev - 1)
 	}
 
-	const isGameWon = useCallback(() => {
-		if (!word) return false
+	const hasPlayerWon = useCallback(() => {
+		if (!currentWord) return false
 
-		return correctLettersPositions.length === word.length
-	}, [correctLettersPositions, word])
+		return revealedLetterPositions.length === currentWord.length
+	}, [revealedLetterPositions, currentWord])
 
-	const handlePoints = useCallback(() => {
-		setPoints((prevPoints) => prevPoints + 100)
+	const incrementScore = useCallback(() => {
+		setScore((prevScore) => prevScore + 100)
 	}, [])
 
-	const value = {
+	const contextValue = {
+		isGameStarted,
+		selectedCategory,
+		currentWord,
+		score,
+		remainingAttempts,
 		startGame,
-		category,
-		word,
-		points,
-		tries,
-		startNewGame,
-		getCategoryAndWord,
-		addCorrectLetterPositions,
-		renderByLetter,
-		isGameWon,
-		handlePoints,
-		decreaseTries,
+		selectRandomCategoryAndWord,
+		revealLetterPositions,
+		getLetterToDisplay,
+		hasPlayerWon,
+		incrementScore,
+		decrementAttempts,
 		resetGame
 	}
 
 	return (
-		<SecretWordContext.Provider value={value}>
+		<SecretWordContext.Provider value={contextValue}>
 			{children}
 		</SecretWordContext.Provider>
 	)
