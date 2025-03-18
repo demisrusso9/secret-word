@@ -35,7 +35,9 @@ export function SecretWordProvider({ children }: SecretWordProviderProps) {
 		const categoryKey = Object.keys(wordList)[randomNumber] as CategoryKey
 		const categoryValues = Object.values(wordList[categoryKey])
 
-		const randomNumberForWord = Math.floor(Math.random() * 4)
+		const randomNumberForWord = Math.floor(
+			Math.random() * categoryValues.length
+		)
 		const wordKey = categoryValues[randomNumberForWord]
 
 		setCategory(categoryKey)
@@ -67,8 +69,6 @@ export function SecretWordProvider({ children }: SecretWordProviderProps) {
 	}
 
 	const isGameWon = useCallback(() => {
-		console.log({ correctLettersPositions })
-
 		if (!word) return false
 
 		return correctLettersPositions.length === word.length

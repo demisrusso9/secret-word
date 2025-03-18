@@ -20,7 +20,6 @@ export function Game() {
 		if (!letter) return
 
 		const correctPositions: number[] = []
-
 		const wordMap = word.toLowerCase().split('')
 
 		wordMap.map((l, index) => {
@@ -28,10 +27,6 @@ export function Game() {
 				correctPositions.push(index)
 			}
 		})
-
-		// 0 1 2 3 4
-		// a r r o z
-		// letra x
 
 		if (!wordMap.includes(letter) && !usedLetters.includes(letter)) {
 			setUsedLetters([...usedLetters, letter])
