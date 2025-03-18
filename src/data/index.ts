@@ -4,6 +4,6 @@ export const wordList = {
 	computador: ['Teclado', 'Mouse', 'Monitor', 'Gabinete', 'Placamãe'],
 	aviao: ['Asa', 'Motor', 'Painel', 'Cockpit', 'Turbinas'],
 	navio: ['Casco', 'Proa', 'Popa', 'Convés', 'Mastro'],
-	televisao: ['Tela', 'Controle', 'Botao', 'Imagem', 'Som'],
+	televisao: ['Tela', 'Controle', 'Botão', 'Imagem', 'Som'],
 	alimento: ['Arroz', 'Feijão', 'Carne', 'Salada', 'Sobremesa']
 }

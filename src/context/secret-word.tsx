@@ -17,6 +17,7 @@ export function SecretWordProvider({ children }: SecretWordProviderProps) {
 	const [word, setWord] = useState('')
 
 	const [points, setPoints] = useState(0)
+	const [tries, setTries] = useState(5)
 
 	const [correctLettersPositions, setCorrectLettersPositions] = useState<
 		number[]
@@ -55,6 +56,16 @@ export function SecretWordProvider({ children }: SecretWordProviderProps) {
 		return correctLettersPositions.includes(index) ? word[index] : ''
 	}
 
+	function resetGame() {
+		setStartGame(false)
+		setPoints(0)
+		setTries(5)
+	}
+
+	function decreaseTries() {
+		setTries((prev) => prev - 1)
+	}
+
 	const isGameWon = useCallback(() => {
 		console.log({ correctLettersPositions })
 
@@ -72,12 +83,15 @@ export function SecretWordProvider({ children }: SecretWordProviderProps) {
 		category,
 		word,
 		points,
+		tries,
 		startNewGame,
 		getCategoryAndWord,
 		addCorrectLetterPositions,
 		renderByLetter,
 		isGameWon,
-		handlePoints
+		handlePoints,
+		decreaseTries,
+		resetGame
 	}
 
 	return (
