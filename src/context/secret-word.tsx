@@ -38,7 +38,7 @@ export function SecretWordProvider({ children }: SecretWordProviderProps) {
 		const wordsInCategory = Object.values(wordList[categoryKey])
 
 		const randomWordIndex = Math.floor(Math.random() * wordsInCategory.length)
-		const randomWord = wordsInCategory[randomWordIndex]
+		const randomWord = wordsInCategory[randomWordIndex].toLowerCase()
 
 		setSelectedCategory(categoryKey)
 		setCurrentWord(randomWord)

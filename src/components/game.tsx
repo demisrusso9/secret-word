@@ -20,7 +20,7 @@ export function Game() {
 		if (!letter) return
 
 		const matchedPositions: number[] = []
-		const wordCharacters = currentWord.toLowerCase().split('')
+		const wordCharacters = currentWord.split('')
 
 		wordCharacters.map((char, index) => {
 			if (char === letter.toLowerCase()) {
